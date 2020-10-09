@@ -40,5 +40,30 @@ namespace Comment.Controllers
 
             return Ok(commentForAdd);
         }
+        [HttpGet("{id}")]
+        public IActionResult GetComment(int userId , int id)
+        {
+            if(!_commentRepository.IsUserExist(userId))
+            {
+                return NotFound();
+            }
+
+            var commentEntity = _commentRepository.GetComment(userId, id);
+
+            if (commentEntity == null)
+            {
+                return NotFound();
+            }
+            var commentForAdd = new CommentDto()
+            {
+                Id = commentEntity.Id,
+                Title = commentEntity.Title,
+                Description = commentEntity.Description
+            };
+
+            return Ok(commentForAdd);
+            
+        }
+
     }
 }
